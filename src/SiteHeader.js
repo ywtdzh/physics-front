@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Navbar} from "react-bootstrap";
 import SiteCollapse from './SiteCollapse';
 import logo from './logo.svg';
+import {Link} from "react-router-dom";
 
 class SiteHeader extends Component {
     render() {
@@ -11,7 +12,7 @@ class SiteHeader extends Component {
                 <Navbar.Toggle/>
             </Navbar.Header>
             <Navbar.Text style={{display: "inline"}}>
-                大学物理实验
+                <Link to={"/"}>大学物理实验</Link>
             </Navbar.Text>
             <SiteCollapse/>
         </Navbar>);
