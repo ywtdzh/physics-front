@@ -3,7 +3,7 @@ import FieldInputGroup from './FieldInputGroup';
 import {Grid, Row, Col, Button, FormGroup} from "react-bootstrap";
 import {connect} from 'react-redux';
 import Actions from '../redux/ActionFactory';
-import Request from '../request';
+import Request from '../request-stub';
 import {Redirect} from "react-router-dom";
 
 class LoginForm extends Component {
@@ -63,7 +63,7 @@ class LoginForm extends Component {
     }
 }
 
-function stateToProp(state) {
+function storeStateToComponentProp(state) {
     //select part of the state it need
     let user = state.userInfo;
     return {
@@ -73,4 +73,4 @@ function stateToProp(state) {
     };
 }
 
-export default connect(stateToProp)(LoginForm);
+export default connect(storeStateToComponentProp)(LoginForm);
