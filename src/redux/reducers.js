@@ -15,11 +15,6 @@ const ownEquipStatus = (state = {}, action) => {
         action.ownEquipStatus :
         state;
 };
-const evaluate = (state = {}, action) => {
-    return action.type === ACTION_TYPE.FETCH_EVALUATE ?
-        action.evaluate :
-        state;
-};
 const userInfo = (state = {}, action) => {
     return action.type === ACTION_TYPE.FETCH_USER_INFO ?
         action.userInfo :
@@ -30,6 +25,5 @@ export default {
     userList,
     equipStatus,
     ownEquipStatus,
-    evaluate,
     userInfo,
 };

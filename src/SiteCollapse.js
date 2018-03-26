@@ -7,7 +7,7 @@ import Actions from './redux/ActionFactory';
 
 class SiteCollapse extends Component {
     render() {
-        const {username, isLoggedIn, userType} = this.props;
+        const {id, isLoggedIn, userType} = this.props;
         return (<Navbar.Collapse>
             {isLoggedIn && userType === 'elder' ?
                 <Nav>
@@ -25,11 +25,11 @@ class SiteCollapse extends Component {
             }
             {isLoggedIn ?
                 <Nav pullRight>
-                    <Navbar.Text>你好!&nbsp;{username}</Navbar.Text>
+                    <Navbar.Text>你好!&nbsp;{id}</Navbar.Text>
                     <NavItem><Link to={"/"}
                                    onClick={() => {
                                        /*send logout message here*/
-                                       this.props.dispatch(Actions.createUserInfo({}))
+                                       this.props.dispatch(Actions.createUserInfo({}));
                                    }}>退出</Link></NavItem>
                 </Nav> :
                 <Nav pullRight>
@@ -42,7 +42,7 @@ class SiteCollapse extends Component {
 
 SiteCollapse.propTypes = {
     isLoggedIn: PropTypes.bool,
-    username: PropTypes.string,
+    device: PropTypes.string,
     userType: PropTypes.string,
 };
 
@@ -50,8 +50,8 @@ function stateToProp(state) {
     //select part of the state it need
     let user = state.userInfo;
     return {
-        isLoggedIn: user && user.username,
-        username: user ? user.username : null,
+        isLoggedIn: user && user.device,
+        device: user ? user.device : null,
         userType: user ? user.type : null,
     };
 }

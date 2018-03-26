@@ -38,10 +38,10 @@ class LoginForm extends Component {
         return (<Grid>
             <Row><Col mdOffset={3} md={6}>
                 <FieldInputGroup
-                    name={"username"}
+                    name={"id"}
                     label={"用户名"}
                     readOnly={false}
-                    value={this.state.username}
+                    value={this.state.device}
                     type={"text"}
                     placeHolder={"请输入用户名"}
                     onChange={this.onChange}
@@ -67,8 +67,8 @@ function storeStateToComponentProp(state) {
     //select part of the state it need
     let user = state.userInfo;
     return {
-        isLoggedIn: user && user.username,
-        username: user ? user.username : null,
+        isLoggedIn: user && user.device,
+        username: user ? user.device : null,
         userType: user ? user.type : null,
     };
 }
