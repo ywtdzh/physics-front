@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Router, Route, Switch} from 'react-router-dom';
-import {createStore, combineReducers} from 'redux';
+import {Route, Router, Switch} from 'react-router-dom';
+import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {createBrowserHistory} from 'history';
 import reducers from './redux/reducers';
-import LoginForm from './pages/LoginForm';
 import App from './App';
+import LoginForm from "./pages/LoginForm";
 
 const browserHistory = createBrowserHistory();
 
@@ -23,22 +23,22 @@ class SiteProvider extends Component {
         return (
             <Provider store={store}>
                 <Router history={browserHistory}>
-                    <Route path={"/"}>
-                        <App>
-                            <Switch>
-                                <Route path={"/login"} render={()=><LoginForm/>}/>
-                                <Route path={"/admin"}>
-                                    {/*<Route path={"user"}/>*/}
-                                    {/*<Route path={"status"}/>*/}
-                                </Route>
-                                <Route path={"/user"}>
-                                    {/*<Route path={"equipment"}/>*/}
-                                    {/*<Route path={"code"}/>*/}
-                                    {/*<Route path={"evaluate"}/>*/}
-                                </Route>
-                            </Switch>
-                        </App>
-                    </Route>
+                    <App>
+                        <Switch>
+                            <Route path={"/login"} render={() => <LoginForm/>}/>
+                            <Route path={"/admin"}>
+                                <div>
+                                    <Route path={`/admin/user`} render={() => <div>user</div>}/>
+                                    <Route path={"/admin/status"} render={() => <div>status</div>}/>
+                                </div>
+                            </Route>
+                            <Route path={"/user"}>
+                                {/*<Route path={"equipment"}/>*/}
+                                {/*<Route path={"code"}/>*/}
+                                {/*<Route path={"evaluate"}/>*/}
+                            </Route>
+                        </Switch>
+                    </App>
                 </Router>
             </Provider>
         );
