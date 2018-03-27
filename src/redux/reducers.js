@@ -1,7 +1,6 @@
 import {ACTION_TYPE} from "./ActionFactory";
 
 const users = (state = [], action) => {
-    console.log(action)
     return action.type === ACTION_TYPE.FETCH_USERS ?
         action.users :
         state;
