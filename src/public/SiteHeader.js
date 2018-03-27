@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Navbar} from "react-bootstrap";
 import SiteCollapse from './SiteCollapse';
-import logo from './logo.svg';
+import logo from '../logo.svg';
 import {Link} from "react-router-dom";
 
 class SiteHeader extends Component {
     render() {
-        return (<Navbar collapseOnSelect>
+        return (<Navbar collapseOnSelect inverse>
             <Navbar.Header>
                 <img src={logo} alt="" className={"img-responsive"} style={{height: "50px"}}/>
                 <Navbar.Toggle/>

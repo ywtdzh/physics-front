@@ -2,8 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Nav, NavItem, Navbar} from "react-bootstrap";
 import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Actions from './redux/ActionFactory';
+import Actions from '../redux/ActionFactory';
 
 class SiteCollapse extends Component {
     render() {
@@ -40,20 +39,14 @@ class SiteCollapse extends Component {
     }
 }
 
-SiteCollapse.propTypes = {
-    isLoggedIn: PropTypes.bool,
-    device: PropTypes.string,
-    userType: PropTypes.string,
-};
-
-function stateToProp(state) {
+function storeStateToComponentProp(state) {
     //select part of the state it need
     let user = state.userInfo;
     return {
-        isLoggedIn: user && user.device,
-        device: user ? user.device : null,
+        isLoggedIn: !!(user && user.id),
+        id: user ? user.id : null,
         userType: user ? user.type : null,
     };
 }
 
-export default connect(stateToProp)(SiteCollapse);
+export default connect(storeStateToComponentProp)(SiteCollapse);

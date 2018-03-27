@@ -1,7 +1,7 @@
 import './jquery-wrapper';
 import React, {Component} from 'react';
 import 'bootstrap-loader';
-import SiteHeader from './SiteHeader';
+import SiteHeader from './public/SiteHeader';
 
 class App extends Component {
     render() {
