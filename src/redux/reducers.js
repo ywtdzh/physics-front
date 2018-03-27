@@ -1,6 +1,7 @@
 import {ACTION_TYPE} from "./ActionFactory";
 
-const userList = (state = [], action) => {
+const users = (state = [], action) => {
+    console.log(action)
     return action.type === ACTION_TYPE.FETCH_USERS ?
         action.users :
         state;
@@ -22,7 +23,7 @@ const userInfo = (state = {}, action) => {
 };
 
 export default {
-    userList,
+    users,
     equipStatus,
     ownEquipStatus,
     userInfo,
