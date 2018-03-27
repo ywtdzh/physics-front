@@ -10,7 +10,7 @@ class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            id: '',
             password: '',
         };
     }
@@ -67,8 +67,8 @@ function storeStateToComponentProp(state) {
     //select part of the state it need
     let user = state.userInfo;
     return {
-        isLoggedIn: user && user.device,
-        username: user ? user.device : null,
+        isLoggedIn: user && user.id,
+        id: user ? user.id: null,
         userType: user ? user.type : null,
     };
 }
