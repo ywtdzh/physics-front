@@ -2,7 +2,6 @@ import {Route, Router, Switch} from "react-router-dom";
 import App from "../App";
 import LoginForm from "../pages/LoginForm";
 import React from "react";
-import CodeEditor from "../pages/naive/CodeEditor";
 import UserManagementPage from "../pages/elder/UserManagementPage";
 import AllEquipStatusPage from "../pages/elder/AllEquipStatusPage";
 import UserTypeSwitch from "./UserTypeSwitch";
