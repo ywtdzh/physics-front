@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import ActionFactory from "../../redux/ActionFactory";
 import Request from "../../request-stub";
 import FieldInputGroup from "../FieldInputGroup";
+import {isNullOrUndefined} from "util";
+import {Link, Redirect} from "react-router-dom";
 
 class UserManagementPage extends Component {
     constructor(props) {
@@ -83,7 +85,16 @@ class UserManagementPage extends Component {
         });
     };
 
-    render() {
+    render = () => {
+        if (!this.props.isLoggedIn) {
+            return <Redirect to={"/login"}/>
+        } else if (this.props.userType === 'naive') {
+            return <Grid><Row><Col lgOffset={3} lg={6}>
+                <Link to={"/"}>
+                    <h3>您没有此操作对应的权限，点击返回</h3>
+                </Link>
+            </Col></Row></Grid>
+        }
         const users = this.props.users;
         const rows = [];
         users.forEach((user, index) => {
@@ -161,6 +172,8 @@ function storeStateToComponentProp(state) {
     let users = state.users;
     return {
         users: users,
+        isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
+        userType: state.userInfo && state.userInfo.type,
     };
 }
 
