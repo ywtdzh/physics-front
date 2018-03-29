@@ -26,7 +26,7 @@ class LoginForm extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         /*todo post login info here*/
-        Request.getUserInfo('elder', (userInfo) => {
+        Request.getUserInfo('naive', (userInfo) => {
             this.props.dispatch(Actions.createUserInfo(userInfo));
         });
     };
