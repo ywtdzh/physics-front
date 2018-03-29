@@ -9,13 +9,13 @@ class UserManagementPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addUserDialog: false,
-            newUserId: "",
-            newUserIdValidateState: null,
-            newUserDevice: "",
-            newUserDeviceValidateState: null,
-            newUserPassword: "",
-            newUserPasswordValidateState: null,
+            userInfoDialog: false,
+            userInfoId: "",
+            userInfoIdValidateState: null,
+            userInfoDevice: "",
+            userInfoDeviceValidateState: null,
+            userInfoPassword: "",
+            userInfoPasswordValidateState: null,
         };
         this.refreshList();
     }
@@ -26,22 +26,49 @@ class UserManagementPage extends Component {
         });
     };
 
-    openAddUserDialog = () => {
+    addUser = () => {
         this.setState({
-            addUserDialog: true,
+            userInfoDialog: true,
+            userInfoId: "",
+            userInfoIdValidateState: null,
+            userInfoDevice: "",
+            userInfoDeviceValidateState: null,
+            userInfoPassword: "",
+            userInfoPasswordValidateState: 'error',
         });
     };
 
-    closeAddUserDialog = () => {
+    modifyUser = (e) => {
+        const user = this.props.users[e.target.attributes['name'].value];
         this.setState({
-            addUserDialog: false,
+            userInfoDialog: true,
+            userInfoId: user.id,
+            userInfoIdValidateState: null,
+            userInfoDevice: user.device,
+            userInfoDeviceValidateState: null,
+            userInfoPassword: "",
+            userInfoPasswordValidateState: 'error',
         });
     };
 
-    submitAddUser = () => {
+    closeUserInfoDialog = () => {
+        this.setState({
+            userInfoDialog: false,
+        });
+    };
+
+    deleteUsers = () => {
+        const deleteList = [];
+        this.props.users.forEach((ele, i) => {
+            if (this.state['checkBox' + i]) deleteList.push(this.props.users[i]);
+        });
+        // todo submit delete operation
+    };
+
+    submitUserInfo = () => {
         // todo validate data field
         // todo post user data
-        this.closeAddUserDialog();
+        this.closeUserInfoDialog();
     };
 
     onChange = (e) => {
@@ -50,16 +77,24 @@ class UserManagementPage extends Component {
         });
     };
 
+    onCheck = (e) => {
+        this.setState({
+            [e.target.name]: e.target.checked
+        });
+    };
+
     render() {
         const users = this.props.users;
         const rows = [];
         users.forEach((user, index) => {
             rows.push(<tr>
-                <td style={{width: '20px'}}><Checkbox style={{margin: '0', paddingLeft: '5px'}}
-                                                      name={(index + 1).toString()}/></td>
-                <td>{('0' + (index + 1)).slice(-2)}</td>
-                <td>{user.id}</td>
-                <td>{user.device}</td>
+                <td style={{width: '20px'}}>
+                    <Checkbox style={{margin: '0', paddingLeft: '5px'}}
+                              name={'checkBox' + index} onClick={this.onCheck}/>
+                </td>
+                <td onClick={this.modifyUser} name={index}>{('00' + (index + 1)).slice(-2)}</td>
+                <td onClick={this.modifyUser} name={index}>{user.id}</td>
+                <td onClick={this.modifyUser} name={index}>{user.device}</td>
             </tr>);
         });
         return (<Grid>
@@ -79,41 +114,42 @@ class UserManagementPage extends Component {
                     </tbody>
                 </Table>
                 <Button className="btn-danger pull-right" style={{margin: '10px'}}>删除所选用户</Button>
-                <Button className="btn-info pull-right" style={{margin: '10px'}} onClick={this.refreshList}>刷新列表</Button>
-                <Button className="btn-success pull-right" style={{margin: '10px'}} onClick={this.openAddUserDialog}>新增用户</Button>
+                <Button className="btn-info pull-right" style={{margin: '10px'}}
+                        onClick={this.refreshList}>刷新列表</Button>
+                <Button className="btn-success pull-right" style={{margin: '10px'}} onClick={this.addUser}>新增用户</Button>
             </Col>
             </Row>
-            <Modal show={this.state.addUserDialog} onHide={this.closeAddUserDialog}>
+            <Modal show={this.state.userInfoDialog} onHide={this.closeUserInfoDialog}>
                 <Modal.Header>
-                    <Modal.Title>添加用户</Modal.Title>
+                    <Modal.Title>用户信息</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <FieldInputGroup
-                        name={"newUserId"}
+                        name={"userInfoId"}
                         label={"学号"}
-                        value={this.state.newUserId}
-                        validationState={this.state.newUserIdValidateState}
+                        value={this.state.userInfoId}
+                        validationState={this.state.userInfoIdValidateState}
                         onChange={this.onChange}
                     />
                     <FieldInputGroup
-                        name={"newUserPassword"}
+                        name={"userInfoPassword"}
                         label={"密码"}
                         type={"password"}
-                        value={this.state.newUserPassword}
-                        validationState={this.state.newUserPasswordValidateState}
+                        value={this.state.userInfoPassword}
+                        validationState={this.state.userInfoPasswordValidateState}
                         onChange={this.onChange}
                     />
                     <FieldInputGroup
-                        name={"newUserDevice"}
+                        name={"userInfoDevice"}
                         label={"设备号(1~20)"}
-                        value={this.state.newUserDevice}
-                        validationState={this.state.newUserDeviceValidateState}
+                        value={this.state.userInfoDevice}
+                        validationState={this.state.userInfoDeviceValidateState}
                         onChange={this.onChange}
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.closeAddUserDialog}>取消</Button>
-                    <Button bsStyle="primary" onClick={this.submitAddUser}>保存</Button>
+                    <Button onClick={this.closeUserInfoDialog}>取消</Button>
+                    <Button bsStyle="primary" onClick={this.submitUserInfo}>保存</Button>
                 </Modal.Footer>
             </Modal>
         </Grid>);

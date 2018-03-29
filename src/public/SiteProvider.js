@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import {Route, Router, Switch} from 'react-router-dom';
 import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {createBrowserHistory} from 'history';
 import reducers from '../redux/reducers';
-import App from '../App';
-import LoginForm from "../pages/LoginForm";
 import RootRouter from './RootRouter';
 
 const browserHistory = createBrowserHistory();

@@ -20,9 +20,10 @@ class CodeEditor extends Component {
     }
 
     handleCheckboxChanged = (e) => {
-        this.state.autoCompleteKey[e.target.name] = e.target.checked;
+        const autoCompleteKeys = this.state.autoCompleteKey;
+        autoCompleteKeys[e.target.name] = e.target.checked;
         this.setState({
-            autoCompleteKey: this.state.autoCompleteKey,
+            autoCompleteKey: autoCompleteKeys,
         });
     };
 
@@ -43,7 +44,7 @@ class CodeEditor extends Component {
         };
         for (let key in this.state.autoCompleteKey) {
             if (this.state.autoCompleteKey.hasOwnProperty(key)) {
-                options.extraKeys[key] = this.state.autoCompleteKey[key] && "autocomplete" || null;
+                options.extraKeys[key] = (this.state.autoCompleteKey[key] && "autocomplete") || null;
             }
         }
         return (<Grid><Row><Col lgOffset={1} lg={10}><h4>请在此处输入代码</h4>
