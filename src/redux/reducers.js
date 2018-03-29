@@ -20,10 +20,22 @@ const userInfo = (state = {}, action) => {
         action.userInfo :
         state;
 };
+const code = (state = {}, action) => {
+    return action.type === ACTION_TYPE.FETCH_CODE ?
+        action.code :
+        state;
+};
+const downloadLink = (state = {}, action) => {
+    return action.type === ACTION_TYPE.FETCH_DOWNLOAD_LINK ?
+        action.downloadLink :
+        state;
+};
 
 export default {
     users,
     equipStatus,
     ownEquipStatus,
     userInfo,
+    code,
+    downloadLink,
 };

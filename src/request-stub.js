@@ -76,4 +76,18 @@ const getOwnEquipStatus = (callback) => {
     });
 };
 
-export default {getEquipStatus, getOwnEquipStatus, getUserInfo, getUsers};
+const getCode = (callback) => {
+    callback({
+        status: true,
+        code: 'int main() {\nprintf("hello world");\n}\n',
+    });
+};
+
+const getDownloadLink = (callback) => {
+    callback({
+        status: true,
+        downloadLink: 'https://www.baidu.com',
+    });
+};
+
+export default {getEquipStatus, getOwnEquipStatus, getUserInfo, getUsers, getCode};
