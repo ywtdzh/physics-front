@@ -90,4 +90,4 @@ const getDownloadLink = (callback) => {
     });
 };
 
-export default {getEquipStatus, getOwnEquipStatus, getUserInfo, getUsers, getCode};
+export default {getEquipStatus, getOwnEquipStatus, getUserInfo, getUsers, getCode, getDownloadLink};

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Button, Checkbox, Col, Grid, Row} from "react-bootstrap";
+import {Button, Checkbox} from "react-bootstrap";
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
@@ -47,26 +47,26 @@ class CodeEditor extends Component {
                 options.extraKeys[key] = (this.state.autoCompleteKey[key] && "autocomplete") || null;
             }
         }
-        return (<Grid><Row><Col lgOffset={1} lg={10}><h4>请在此处输入代码</h4>
-            <Checkbox onChange={this.handleCheckboxChanged} name="Tab" inline
-                      style={{marginLeft: "10px"}}>使用Tab进行代码提示</Checkbox>
-            <Checkbox onChange={this.handleCheckboxChanged} name="Ctrl" inline>使用Ctrl进行代码提示</Checkbox>
-            <Checkbox onChange={this.handleCheckboxChanged} name="Alt" inline>使用Alt进行代码提示</Checkbox>
-            <hr/>
-            <CodeMirror
-                value={this.state.value}
-                autoFocus={true}
-                options={options}
-                onBeforeChange={(editor, data, value) => {
-                    this.setState({value});
-                }}
-                onChange={(editor, data, value) => {
+        return (<div><h2>请在此处输入代码</h2>
+                <Checkbox onChange={this.handleCheckboxChanged} name="Tab" inline
+                          style={{marginLeft: "10px"}}>使用Tab进行代码提示</Checkbox>
+                <Checkbox onChange={this.handleCheckboxChanged} name="Ctrl" inline>使用Ctrl进行代码提示</Checkbox>
+                <Checkbox onChange={this.handleCheckboxChanged} name="Alt" inline>使用Alt进行代码提示</Checkbox>
+                <hr/>
+                <CodeMirror
+                    value={this.state.value}
+                    autoFocus={true}
+                    options={options}
+                    onBeforeChange={(editor, data, value) => {
+                        this.setState({value});
+                    }}
+                    onChange={(editor, data, value) => {
 
-                }}
-            />
-            <Button className="btn-success pull-right" onClick={this.submit}>提交代码</Button>
-        </Col>
-        </Row></Grid>);
+                    }}
+                />
+                <Button className="btn-success pull-right" onClick={this.submit}>提交代码</Button>
+            </div>
+        );
     }
 }
 

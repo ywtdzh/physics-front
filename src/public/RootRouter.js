@@ -5,6 +5,7 @@ import React from "react";
 import UserManagementPage from "../pages/elder/UserManagementPage";
 import AllEquipStatusPage from "../pages/elder/AllEquipStatusPage";
 import UserTypeSwitch from "./UserTypeSwitch";
+import NaivePage from "../pages/naive/NaivePage";
 
 export default (history) => (<Router history={history}>
     <App>
@@ -14,7 +15,7 @@ export default (history) => (<Router history={history}>
             <Route exact path={`/admin`} render={() => <UserTypeSwitch/>}/>
             <Route path={`/admin/user`} render={() => <UserManagementPage/>}/>
             <Route path={"/admin/status"} render={() => <AllEquipStatusPage/>}/>
-            <Route exact path={"/user"} render={() => <UserTypeSwitch/>}/>
+            <Route exact path={"/user"} render={() => <NaivePage/>}/>
         </Switch>
     </App>
 </Router>);
