@@ -7,7 +7,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <SiteHeader history={this.props.history}/>
+                <SiteHeader/>
                 {this.props.children}
             </div>
         );
