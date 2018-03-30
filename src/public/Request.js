@@ -79,7 +79,7 @@ const getEquipStatus = (callback) => {
 
 const getOwnEquipStatus = (callback) => {
     const token = getToken();
-    Axios.post(`${Config.server()}/api/user/list`, {token})
+    Axios.post(`${Config.server()}/api/device/status`, {token})
         .then(res => {
             const response = res.data;
             if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable

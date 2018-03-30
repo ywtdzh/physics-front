@@ -12,11 +12,18 @@ class AllEquipStatus extends Component {
         super(props);
         this.state = {};
         this.getEquipmentStatus();
+        this.getDownloadLink();
     }
 
     getEquipmentStatus = () => {
         Request.getEquipStatus(status => {
             this.props.dispatch(ActionFactory.createEquipStatus(status));
+        });
+    };
+
+    getDownloadLink = () => {
+        Request.getDownloadLink(downloadLink => {
+            this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };
 
@@ -62,7 +69,7 @@ class AllEquipStatus extends Component {
                 {rows}
                 </tbody>
             </Table>
-            <Button bsStyle={"info"} className={"pull-right"}>下载数据</Button>  {/*todo*/}
+            <a href={this.props.downloadLink}><Button bsStyle={"info"} className={"pull-right"}>下载数据</Button></a>
         </Col></Row></Grid>;
     }
 }
@@ -75,6 +82,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
         userType: state.userInfo && state.userInfo.type,
         equipStatus,
+        downloadLink: state.downloadLink,
     };
 }
 

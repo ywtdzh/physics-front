@@ -58,9 +58,7 @@ class CodeEditor extends Component {
                     value={this.props.value}
                     autoFocus={true}
                     options={options}
-                    onBeforeChange={(editor, data, value) => {
-                        this.setState({value});
-                    }}
+                    onBeforeChange={this.props.onBeforeChange}
                     onChange={this.props.onChange}
                 />
                 <Button className="btn-success pull-right" onClick={this.submit}>提交代码</Button>

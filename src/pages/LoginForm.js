@@ -25,10 +25,13 @@ class LoginForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        // todo handle error id and password match
+        if(!this.state.id || !this.state.password) {
+            this.setState({error: "缺少必填项"});
+            return;
+        }
         Request.getUserInfo({id: this.state.id, password: this.state.password}, (response) => {
             if (response instanceof Error)
-                this.setState({error: response});
+                this.setState({error: "用户名或密码错误！"});
             else
                 this.props.dispatch(Actions.createUserInfo(response));
         });
@@ -61,7 +64,7 @@ class LoginForm extends Component {
                 <FormGroup>
                     <Button block={true} onClick={this.onSubmit}>立即登录</Button>
                 </FormGroup>
-                <p>{this.state.error || ''}</p>
+                <p style={{color: 'red'}}>{this.state.error || ''}</p>
             </Col></Row>
         </Grid>);
     }

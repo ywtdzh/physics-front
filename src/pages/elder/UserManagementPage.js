@@ -68,19 +68,22 @@ class UserManagementPage extends Component {
     };
 
     submitUserInfo = () => {
-        // todo validate data field
+        if (!this.state.userInfoIdValidateState || !this.state.userInfoDeviceValidateState
+            || !this.state.userInfoPasswordValidateState) return;
         Request.createOrUpdateUser({
             id: this.state.userInfoId,
             password: this.state.userInfoPassword,
             device: this.state.userInfoDevice,
         }, () => {
             this.closeUserInfoDialog();
+            this.refreshList();
         });
     };
 
     onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
+            [e.target.name + 'ValidateState']: e.target.value ? 'error' : null,
         });
     };
 

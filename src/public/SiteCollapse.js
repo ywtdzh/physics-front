@@ -8,8 +8,8 @@ import Request from '../public/Request';
 class SiteCollapse extends Component {
     constructor(props) {
         super(props);
-        Request.getCode(() => {
-            this.props.dispatch(ActionFactory.createCode());
+        Request.getDownloadLink(() => {
+            this.props.dispatch(ActionFactory.createDownloadLink());
         });
     }
 
@@ -20,7 +20,7 @@ class SiteCollapse extends Component {
                 <Nav>
                     <NavItem eventKey={1}><Link to={"/admin/user"}>用户管理</Link></NavItem>
                     <NavItem eventKey={2}><Link to={"/admin/status"}>设备状态</Link></NavItem>
-                    <NavItem eventKey={3}><Link to={this.props.code}>下载数据</Link></NavItem>
+                    <NavItem eventKey={3}><Link to={this.props.downloadLink}>下载数据</Link></NavItem>
                 </Nav> : <React.Fragment/>
             }
             {
@@ -51,7 +51,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: !!(user && user.id),
         id: user ? user.id : null,
         userType: user ? user.type : null,
-        code: state.code,
+        downloadLink: state.downloadLink,
     };
 }
 

@@ -56,8 +56,8 @@ class NaivePage extends Component {
                 <tbody>{ownStatus}</tbody>
             </Table>
             <Button bsStyle={"info"} className={"pull-right"} onClick={this.getOwnStatus}>刷新设备信息</Button>
-            <CodeEditor value={this.state.code} onChange={(editor, data, value) => {
-                this.setState({code: data});
+            <CodeEditor value={this.state.code} onBeforeChange={(editor, data, value) => {
+                this.setState({code: value});
             }}/>
             {Util.isNullOrUndefined(this.props.downloadLink.downloadLink)
                 ? <React.Fragment/> :
