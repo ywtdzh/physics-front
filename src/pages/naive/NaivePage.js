@@ -59,14 +59,14 @@ class NaivePage extends Component {
             <CodeEditor value={this.state.code} onChange={(editor, data, value) => {
                 this.setState({code: data});
             }}/>
-            {Util.isNullOrUndefined(this.props.downloadLink.downloadLink) ?
-                <React.fragment/> :
-                <div>
+            {Util.isNullOrUndefined(this.props.downloadLink.downloadLink)
+                ? <React.Fragment/> :
+                <React.Fragment>
                     <hr/>
                     <h2>当前设备数据：</h2>
                     <a href={this.props.downloadLink.downloadLink}>
                         <Button bsStyle={"success"} className={"pull-right"}>下载数据</Button></a>
-                </div>
+                </React.Fragment>
             }
         </Col></Row></Grid>;
     }
