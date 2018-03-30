@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from "react-router-dom";
 import ActionFactory from "../../redux/ActionFactory";
-import Request from '../../request-stub';
+import Request from '../../public/Request';
 import {Button, Col, Grid, Row, Table} from "react-bootstrap";
 import Util from 'util';
 import CodeEditor from "./CodeEditor";
@@ -11,7 +11,7 @@ class NaivePage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {code: ''};
         this.getOwnStatus();
         this.getCode();
         this.getDownloadLink();
@@ -56,7 +56,9 @@ class NaivePage extends Component {
                 <tbody>{ownStatus}</tbody>
             </Table>
             <Button bsStyle={"info"} className={"pull-right"} onClick={this.getOwnStatus}>刷新设备信息</Button>
-            <CodeEditor/>
+            <CodeEditor value={this.state.code} onChange={(editor, data, value) => {
+                this.setState({code: data});
+            }}/>
             {Util.isNullOrUndefined(this.props.downloadLink.downloadLink) ?
                 <React.fragment/> :
                 <div>
@@ -65,7 +67,7 @@ class NaivePage extends Component {
                     <a href={this.props.downloadLink.downloadLink}>
                         <Button bsStyle={"success"} className={"pull-right"}>下载数据</Button></a>
                 </div>
-                }
+            }
         </Col></Row></Grid>;
     }
 }

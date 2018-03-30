@@ -2,9 +2,17 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import {Link} from 'react-router-dom';
-import Actions from '../redux/ActionFactory';
+import ActionFactory from '../redux/ActionFactory';
+import Request from '../public/Request';
 
 class SiteCollapse extends Component {
+    constructor(props) {
+        super(props);
+        Request.getCode(() => {
+            this.props.dispatch(ActionFactory.createCode());
+        });
+    }
+
     render() {
         const {id, isLoggedIn, userType} = this.props;
         return (<Navbar.Collapse>
@@ -12,7 +20,7 @@ class SiteCollapse extends Component {
                 <Nav>
                     <NavItem eventKey={1}><Link to={"/admin/user"}>用户管理</Link></NavItem>
                     <NavItem eventKey={2}><Link to={"/admin/status"}>设备状态</Link></NavItem>
-                    <NavItem eventKey={3}>下载数据{/*todo: 下载什么数据？可以放到其他页面上*/}</NavItem>
+                    <NavItem eventKey={3}><Link to={this.props.code}>下载数据</Link></NavItem>
                 </Nav> : <React.Fragment/>
             }
             {
@@ -24,7 +32,8 @@ class SiteCollapse extends Component {
                     <NavItem><Link to={"/"}
                                    onClick={() => {
                                        /*send logout message here*/
-                                       this.props.dispatch(Actions.createUserInfo({}));
+                                       this.props.dispatch(ActionFactory.createUserInfo({}));
+                                       Request.logOut();
                                    }}>退出</Link></NavItem>
                 </Nav> :
                 <Nav pullRight>
@@ -42,6 +51,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: !!(user && user.id),
         id: user ? user.id : null,
         userType: user ? user.type : null,
+        code: state.code,
     };
 }
 

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, Checkbox, Col, Grid, Modal, Row, Table} from "react-bootstrap";
 import {connect} from "react-redux";
 import ActionFactory from "../../redux/ActionFactory";
-import Request from "../../request-stub";
+import Request from "../../public/Request";
 import FieldInputGroup from "../FieldInputGroup";
 import {isNullOrUndefined} from "util";
 import {Link, Redirect} from "react-router-dom";
@@ -69,8 +69,13 @@ class UserManagementPage extends Component {
 
     submitUserInfo = () => {
         // todo validate data field
-        // todo post user data
-        this.closeUserInfoDialog();
+        Request.createOrUpdateUser({
+            id: this.state.userInfoId,
+            password: this.state.userInfoPassword,
+            device: this.state.userInfoDevice,
+        }, () => {
+            this.closeUserInfoDialog();
+        });
     };
 
     onChange = (e) => {

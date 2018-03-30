@@ -4,7 +4,7 @@ import {Link, Redirect} from "react-router-dom";
 import {Button, Col, Grid, Row, Table} from "react-bootstrap";
 import {isNullOrUndefined} from 'util';
 import ActionFactory from "../../redux/ActionFactory";
-import Request from '../../request-stub';
+import Request from '../../public/Request';
 
 class AllEquipStatus extends Component {
 
@@ -33,14 +33,14 @@ class AllEquipStatus extends Component {
         const rows = [];
         this.props.equipStatus.forEach(ele => {
             rows.push(<tr>
-                <td>ele.device</td>
-                <td>ele.msg</td>
-                <td>ele.detail</td>
-                <td>ele.pwm</td>
-                <td>ele.generator_i</td>
-                <td>ele.generator_u</td>
-                <td>payload_i</td>
-                <td>payload_u</td>
+                <td>{ele.device}</td>
+                <td>{ele.code_status}</td>
+                <td>{ele.code_status_detail}</td>
+                <td>{ele.pwm}</td>
+                <td>{ele.generator_i}</td>
+                <td>{ele.generator_u}</td>
+                <td>{ele.payload_i}</td>
+                <td>{ele.payload_u}</td>
             </tr>);
         });
 

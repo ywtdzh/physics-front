@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import FieldInputGroup from './FieldInputGroup';
-import {Grid, Row, Col, Button, FormGroup} from "react-bootstrap";
+import {Button, Col, FormGroup, Grid, Row} from "react-bootstrap";
 import {connect} from 'react-redux';
 import Actions from '../redux/ActionFactory';
-import Request from '../request-stub';
+import Request from '../public/Request';
 import {Redirect} from "react-router-dom";
 
 class LoginForm extends Component {
@@ -25,14 +25,13 @@ class LoginForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        /*todo post login info here*/
-        Request.getUserInfo('naive', (userInfo) => {
+        Request.getUserInfo({id: this.state.id, password: this.state.password}, (userInfo) => {
             this.props.dispatch(Actions.createUserInfo(userInfo));
         });
     };
 
     render() {
-        if(this.props.isLoggedIn) {
+        if (this.props.isLoggedIn) {
             return <Redirect to={"/"}/>
         }
         return (<Grid>
@@ -68,7 +67,7 @@ function storeStateToComponentProp(state) {
     let user = state.userInfo;
     return {
         isLoggedIn: user && user.id,
-        id: user ? user.id: null,
+        id: user ? user.id : null,
         userType: user ? user.type : null,
     };
 }

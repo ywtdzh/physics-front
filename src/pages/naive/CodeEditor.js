@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Button, Checkbox} from "react-bootstrap";
+import Request from '../../public/Request';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
@@ -29,7 +30,7 @@ class CodeEditor extends Component {
 
     submit = (e) => {
         e.preventDefault();
-        console.log("submit succeed"); //todo
+        Request.submitCode(this.props.value);
     };
 
     render() {
@@ -54,15 +55,13 @@ class CodeEditor extends Component {
                 <Checkbox onChange={this.handleCheckboxChanged} name="Alt" inline>使用Alt进行代码提示</Checkbox>
                 <hr/>
                 <CodeMirror
-                    value={this.state.value}
+                    value={this.props.value}
                     autoFocus={true}
                     options={options}
                     onBeforeChange={(editor, data, value) => {
                         this.setState({value});
                     }}
-                    onChange={(editor, data, value) => {
-
-                    }}
+                    onChange={this.props.onChange}
                 />
                 <Button className="btn-success pull-right" onClick={this.submit}>提交代码</Button>
             </div>

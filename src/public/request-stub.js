@@ -32,8 +32,8 @@ const getEquipStatus = (callback) => {
     callback([
         {
             device: 1,
-            msg: "compile_failed",
-            detail: "",
+            code_status: "compile_failed",
+            code_status_detail: "",
             pwm: 10000,
             generator_i: 5000,
             generator_u: 5000,
@@ -42,8 +42,8 @@ const getEquipStatus = (callback) => {
         },
         {
             device: 2,
-            msg: "compile_failed",
-            detail: "",
+            code_status: "compile_failed",
+            code_status_detail: "",
             pwm: 10000,
             generator_i: 5000,
             generator_u: 5000,
@@ -52,8 +52,8 @@ const getEquipStatus = (callback) => {
         },
         {
             device: 3,
-            msg: "compile_failed",
-            detail: "",
+            code_status: "compile_failed",
+            code_status_detail: "",
             pwm: 10000,
             generator_i: 5000,
             generator_u: 5000,
@@ -66,8 +66,8 @@ const getEquipStatus = (callback) => {
 const getOwnEquipStatus = (callback) => {
     callback({
         device: 1,
-        msg: "compile_failed",
-        detail: "",
+        code_status: "compile_failed",
+        code_status_detail: "",
         pwm: 10000,
         generator_i: 5000,
         generator_u: 5000,
