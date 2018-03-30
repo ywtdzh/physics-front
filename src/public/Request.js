@@ -17,7 +17,7 @@ const logOut = () => {
 };
 
 const getUserInfo = (loginInfo, callback) => {
-    Axios.post(`${Config.server()}/api/user/login`, {id: loginInfo.id, password: loginInfo.password})
+    Axios.post(`${Config.server()}/api/user/login`, loginInfo)
         .then(res => {
             const response = res.data;
             if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
