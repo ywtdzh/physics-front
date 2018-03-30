@@ -24,6 +24,7 @@ class UserManagementPage extends Component {
 
     refreshList = () => {
         Request.getUsers(users => {
+            if(users instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createUsers(users));
         });
     };
@@ -74,7 +75,8 @@ class UserManagementPage extends Component {
             id: this.state.userInfoId,
             password: this.state.userInfoPassword,
             device: this.state.userInfoDevice,
-        }, () => {
+        }, (error) => {
+            if(error instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.closeUserInfoDialog();
             this.refreshList();
         });

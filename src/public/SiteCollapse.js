@@ -8,8 +8,9 @@ import Request from '../public/Request';
 class SiteCollapse extends Component {
     constructor(props) {
         super(props);
-        Request.getDownloadLink(() => {
-            this.props.dispatch(ActionFactory.createDownloadLink());
+        Request.getDownloadLink((downLoadLink) => {
+            if(downLoadLink instanceof Error) window.localStorage && (window.localStorage.error = status);
+            this.props.dispatch(ActionFactory.createDownloadLink(downLoadLink));
         });
     }
 

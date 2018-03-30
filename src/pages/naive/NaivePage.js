@@ -19,18 +19,21 @@ class NaivePage extends Component {
 
     getOwnStatus = () => {
         Request.getOwnEquipStatus(status => {
+            if(status instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createEquipStatus(status));
         });
     };
 
     getCode = () => {
         Request.getCode(code => {
+            if(code instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createCode(code));
         });
     };
 
     getDownloadLink = () => {
         Request.getDownloadLink(downloadLink => {
+            if(downloadLink instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };

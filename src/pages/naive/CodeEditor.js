@@ -30,7 +30,10 @@ class CodeEditor extends Component {
 
     submit = (e) => {
         e.preventDefault();
-        Request.submitCode(this.props.value);
+        Request.submitCode(this.props.value, (error) => {
+            if(error instanceof Error) alert(`提交错误:${error.toString().slice(7)}`);
+            alert("提交成功！")
+        });
     };
 
     render() {
