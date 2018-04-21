@@ -18,17 +18,17 @@ const ownEquipStatus = (state = {}, action) => {
 const userInfo = (state = {}, action) => {
     return action.type === ACTION_TYPE.FETCH_USER_INFO ?
         action.userInfo :
-        state ||{};
+        state || {};
 };
 const code = (state = {}, action) => {
     return action.type === ACTION_TYPE.FETCH_CODE ?
         action.code :
-        state ||{};
+        state || {};
 };
 const downloadLink = (state = {}, action) => {
     return action.type === ACTION_TYPE.FETCH_DOWNLOAD_LINK ?
         action.downloadLink :
-        state ||{};
+        state || {};
 };
 
 export default {
