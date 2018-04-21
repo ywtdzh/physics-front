@@ -16,14 +16,14 @@ class AllEquipStatus extends Component {
 
     getEquipmentStatus = () => {
         Request.getEquipStatus(status => {
-            if(status instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (status instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createEquipStatus(status));
         });
     };
 
     getDownloadLink = () => {
         Request.getDownloadLink(downloadLink => {
-            if(downloadLink instanceof Error) window.localStorage && (window.localStorage.error = downloadLink);
+            if (downloadLink instanceof Error) window.localStorage && (window.localStorage.error = downloadLink);
             this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };
@@ -78,7 +78,10 @@ class AllEquipStatus extends Component {
 function storeStateToComponentProp(state) {
     //select part of the state it need
     let equipStatus = state.equipStatus;
-    equipStatus.sort((a, b) => parseInt(a.device, 10) - parseInt(b.device, 10));
+    if (equipStatus instanceof Array)
+        equipStatus.sort((a, b) => parseInt(a.device, 10) - parseInt(b.device, 10));
+    else
+        equipStatus = [];
     return {
         isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
         userType: state.userInfo && state.userInfo.type,
