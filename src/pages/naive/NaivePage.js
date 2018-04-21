@@ -71,8 +71,10 @@ class NaivePage extends Component {
                 <React.Fragment>
                     <hr/>
                     <h2>当前设备数据：</h2>
-                    <a href={this.props.downloadLink}>
-                        <Button bsStyle={"success"} className={"pull-right"}>下载数据</Button></a>
+                    <Button bsStyle={"success"} className={"pull-right"}
+                            onClick={() => {
+                                if (this.props.downloadLink) window.location.href = this.props.downloadLink
+                            }}>下载数据</Button>
                 </React.Fragment>
             }
         </Col></Row></Grid>;
