@@ -52,7 +52,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: !!(user && user.id),
         id: user ? user.id : null,
         userType: user ? user.type : null,
-        downloadLink: state.downloadLink,
+        downloadLink: state.downloadLink.downloadLink,
     };
 }
 

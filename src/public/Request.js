@@ -99,7 +99,7 @@ const getDownloadLink = (callback) => {
                 callback(new Error(response.msg));
             }
             if (callback instanceof Function)
-                callback({downloadLink: response.data});
+                callback(response.data);
         });
 };
 

@@ -86,7 +86,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
         userType: state.userInfo && state.userInfo.type,
         equipStatus,
-        downloadLink: state.downloadLink,
+        downloadLink: state.downloadLink.downloadLink,
     };
 }
 

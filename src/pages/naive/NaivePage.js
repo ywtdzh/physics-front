@@ -66,12 +66,12 @@ class NaivePage extends Component {
             <CodeEditor value={this.state.code} onBeforeChange={(editor, data, value) => {
                 this.setState({code: value});
             }}/>
-            {Util.isNullOrUndefined(this.props.downloadLink.downloadLink)
+            {Util.isNullOrUndefined(this.props.downloadLink)
                 ? <React.Fragment/> :
                 <React.Fragment>
                     <hr/>
                     <h2>当前设备数据：</h2>
-                    <a href={this.props.downloadLink.downloadLink}>
+                    <a href={this.props.downloadLink}>
                         <Button bsStyle={"success"} className={"pull-right"}>下载数据</Button></a>
                 </React.Fragment>
             }
@@ -86,8 +86,8 @@ function storeStateToComponentProp(state) {
         isLoggedIn: !!(userInfo && userInfo.id),
         userInfo,
         equipStatus,
-        code: state.code.code,
-        downloadLink,
+        code: code.code,
+        downloadLink: downloadLink.downloadLink,
     };
 }
 
