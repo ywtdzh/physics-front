@@ -37,31 +37,18 @@ const getUserInfo = (loginInfo, callback) => {
 };
 
 const getUsers = (callback) => {
-    callback([
-        {
-            id: '2',
-            type: 'naive',
-            device: '01',
-        },
-        {
-            id: '3',
-            type: 'naive',
-            device: '02',
-        },
-    ]);
-    // todo has not been implemented yet
-    // const token = getToken();
-    // Axios.post(`${Config.server()}/api/user/list`, {token})
-    //     .then(res => {
-    //         const response = res.data;
-    //         if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
-    //             callback(new Error(response.msg));
-    //         }
-    //         else if (callback instanceof Function)
-    //             callback(response.data instanceof Array ?
-    //                 response.data.map(source => ({id: source.id, device: source.device, type: 'naive'})) :
-    //                 new Error('Typeof "data" field do not match'));
-    //     });
+    const token = getToken();
+    Axios.post(`${Config.server()}/api/user/list`, {token})
+        .then(res => {
+            const response = res.data;
+            if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
+                callback(new Error(response.msg));
+            }
+            else if (callback instanceof Function)
+                callback(response.data instanceof Array ?
+                    response.data.map(source => ({id: source.id, device: source.device, type: 'naive'})) :
+                    new Error('Typeof "data" field do not match'));
+        });
 };
 
 const getEquipStatus = (callback) => {
@@ -147,6 +134,21 @@ const submitCode = (code, callback = null) => {
         });
 };
 
+const deleteUsers = (users, callback) => {
+    const token = getToken();
+    Axios.post(`${Config.server()}/api/user/delete`, {
+        token,
+        users,
+    }).then(res=>{
+        const response = res.data;
+        if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
+            callback(new Error(response.msg));
+        }
+        if (callback instanceof Function)
+            callback();
+    });
+};
+
 export default {
     getEquipStatus,
     logOut,
@@ -157,4 +159,5 @@ export default {
     getDownloadLink,
     createOrUpdateUser,
     submitCode,
+    deleteUsers,
 };

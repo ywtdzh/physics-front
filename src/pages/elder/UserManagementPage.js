@@ -24,7 +24,7 @@ class UserManagementPage extends Component {
 
     refreshList = () => {
         Request.getUsers(users => {
-            if(users instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (users instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createUsers(users));
         });
     };
@@ -62,10 +62,15 @@ class UserManagementPage extends Component {
 
     deleteUsers = () => {
         const deleteList = [];
-        this.props.users.forEach((ele, i) => {
-            if (this.state['checkBox' + i]) deleteList.push(this.props.users[i]);
+        this.props.users.forEach((user, i) => {
+            if (this.state['checkBox' + i]) deleteList.push(user.id);
         });
-        // todo submit delete operation
+        Request.deleteUsers(deleteList, function () {
+            Request.getUsers(users => {
+                if (users instanceof Error) window.localStorage && (window.localStorage.error = status);
+                this.props.dispatch(ActionFactory.createUsers(users));
+            });
+        });
     };
 
     submitUserInfo = () => {
@@ -76,7 +81,7 @@ class UserManagementPage extends Component {
             password: this.state.userInfoPassword,
             device: this.state.userInfoDevice,
         }, (error) => {
-            if(error instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (error instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.closeUserInfoDialog();
             this.refreshList();
         });
