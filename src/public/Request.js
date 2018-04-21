@@ -86,7 +86,7 @@ const getCode = (callback) => {
                 callback(new Error(response.msg));
             }
             if (callback instanceof Function)
-                callback({status: response.status, code: response.data});
+                callback(response.data);
         });
 };
 
@@ -123,7 +123,7 @@ const createOrUpdateUser = (userAuthenticate, callback) => {
 
 const submitCode = (code, callback = null) => {
     const token = getToken();
-    Axios.post(`${Config.server()} /api/code/submit`, {token, code})
+    Axios.post(`${Config.server()}/api/code/submit`, {token, code})
         .then(res => {
             const response = res.data;
             if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable

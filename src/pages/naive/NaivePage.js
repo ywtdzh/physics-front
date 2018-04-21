@@ -11,29 +11,33 @@ class NaivePage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {code: ''};
+        this.state = {code: props.code};
         this.getOwnStatus();
         this.getCode();
         this.getDownloadLink();
+        setInterval(this.getOwnStatus, 5000);
     }
 
     getOwnStatus = () => {
         Request.getOwnEquipStatus(status => {
-            if(status instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (status instanceof Error) window.localStorage && (window.localStorage.error = status);
             this.props.dispatch(ActionFactory.createEquipStatus(status));
         });
     };
 
     getCode = () => {
         Request.getCode(code => {
-            if(code instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (code instanceof Error) window.localStorage && (window.localStorage.error = code);
+            this.setState({
+                code: code,
+            });
             this.props.dispatch(ActionFactory.createCode(code));
         });
     };
 
     getDownloadLink = () => {
         Request.getDownloadLink(downloadLink => {
-            if(downloadLink instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (downloadLink instanceof Error) window.localStorage && (window.localStorage.error = downloadLink);
             this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };
@@ -82,7 +86,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: !!(userInfo && userInfo.id),
         userInfo,
         equipStatus,
-        code,
+        code: state.code.code,
         downloadLink,
     };
 }

@@ -9,7 +9,7 @@ class SiteCollapse extends Component {
     constructor(props) {
         super(props);
         Request.getDownloadLink((downLoadLink) => {
-            if(downLoadLink instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if(downLoadLink instanceof Error) window.localStorage && (window.localStorage.error = downLoadLink);
             this.props.dispatch(ActionFactory.createDownloadLink(downLoadLink));
         });
     }

@@ -23,7 +23,7 @@ class AllEquipStatus extends Component {
 
     getDownloadLink = () => {
         Request.getDownloadLink(downloadLink => {
-            if(downloadLink instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if(downloadLink instanceof Error) window.localStorage && (window.localStorage.error = downloadLink);
             this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };

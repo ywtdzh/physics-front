@@ -24,7 +24,7 @@ class UserManagementPage extends Component {
 
     refreshList = () => {
         Request.getUsers(users => {
-            if (users instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (users instanceof Error) window.localStorage && (window.localStorage.error = users);
             this.props.dispatch(ActionFactory.createUsers(users));
         });
     };
@@ -33,9 +33,9 @@ class UserManagementPage extends Component {
         this.setState({
             userInfoDialog: true,
             userInfoId: "",
-            userInfoIdValidateState: null,
+            userInfoIdValidateState: 'error',
             userInfoDevice: "",
-            userInfoDeviceValidateState: null,
+            userInfoDeviceValidateState: 'success',
             userInfoPassword: "",
             userInfoPasswordValidateState: 'error',
         });
@@ -46,9 +46,9 @@ class UserManagementPage extends Component {
         this.setState({
             userInfoDialog: true,
             userInfoId: user.id,
-            userInfoIdValidateState: null,
+            userInfoIdValidateState: 'success',
             userInfoDevice: user.device,
-            userInfoDeviceValidateState: null,
+            userInfoDeviceValidateState: 'success',
             userInfoPassword: "",
             userInfoPasswordValidateState: 'error',
         });
@@ -61,37 +61,48 @@ class UserManagementPage extends Component {
     };
 
     deleteUsers = () => {
-        const deleteList = [];
+        const deleteList = [], clearState = {};
         this.props.users.forEach((user, i) => {
             if (this.state['checkBox' + i]) deleteList.push(user.id);
+            clearState['checkBox' + i] = false;
         });
-        Request.deleteUsers(deleteList, function () {
-            Request.getUsers(users => {
-                if (users instanceof Error) window.localStorage && (window.localStorage.error = status);
-                this.props.dispatch(ActionFactory.createUsers(users));
-            });
-        });
+        this.setState(clearState);
+        Request.deleteUsers(deleteList, () => this.refreshList());
     };
 
     submitUserInfo = () => {
-        if (!this.state.userInfoIdValidateState || !this.state.userInfoDeviceValidateState
-            || !this.state.userInfoPasswordValidateState) return;
+        if (this.state.userInfoIdValidateState === 'error' || this.state.userInfoDeviceValidateState === 'error'
+            || this.state.userInfoPasswordValidateState === 'error') return;
         Request.createOrUpdateUser({
-            id: this.state.userInfoId,
+            id: parseInt(this.state.userInfoId),
             password: this.state.userInfoPassword,
-            device: this.state.userInfoDevice,
+            device: isNaN(parseInt(this.state.userInfoDevice)) ? 0 : parseInt(this.state.userInfoDevice),
         }, (error) => {
-            if (error instanceof Error) window.localStorage && (window.localStorage.error = status);
+            if (error instanceof Error) window.localStorage && (window.localStorage.error = error);
             this.closeUserInfoDialog();
             this.refreshList();
         });
     };
 
     onChange = (e) => {
-        this.setState({
+        const state = {
             [e.target.name]: e.target.value,
-            [e.target.name + 'ValidateState']: e.target.value ? 'error' : null,
-        });
+            [e.target.name + 'ValidateState']: null,
+        };
+        switch (e.target.name) {
+            case "userInfoDevice":
+                state[e.target.name + 'ValidateState'] =
+                    (e.target.value === '' || parseInt(e.target.value) <= 20 && parseInt(e.target.value) >= 0)
+                        ? 'success' : 'error';
+                break;
+            case "userInfoId":
+                state[e.target.name + 'ValidateState'] = parseInt(e.target.value).toString() === e.target.value
+                    ? 'success' : 'error';
+                break;
+            case "userInfoPassword":
+                state[e.target.name + 'ValidateState'] = e.target.value.length > 2 ? 'success' : 'error';
+        }
+        this.setState(state);
     };
 
     onCheck = (e) => {
@@ -115,7 +126,7 @@ class UserManagementPage extends Component {
         users.forEach((user, index) => {
             rows.push(<tr>
                 <td style={{width: '20px'}}>
-                    <Checkbox style={{margin: '0', paddingLeft: '5px'}}
+                    <Checkbox style={{margin: '0', paddingLeft: '5px'}} checked={this.state['checkBox' + index]}
                               name={'checkBox' + index} onClick={this.onCheck}/>
                 </td>
                 <td onClick={this.modifyUser} name={index}>{('00' + (index + 1)).slice(-2)}</td>
@@ -139,7 +150,8 @@ class UserManagementPage extends Component {
                     {rows}
                     </tbody>
                 </Table>
-                <Button className="btn-danger pull-right" style={{margin: '10px'}}>删除所选用户</Button>
+                <Button className="btn-danger pull-right" style={{margin: '10px'}}
+                        onClick={this.deleteUsers}>删除所选用户</Button>
                 <Button className="btn-info pull-right" style={{margin: '10px'}}
                         onClick={this.refreshList}>刷新列表</Button>
                 <Button className="btn-success pull-right" style={{margin: '10px'}} onClick={this.addUser}>新增用户</Button>
