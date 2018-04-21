@@ -74,9 +74,9 @@ class UserManagementPage extends Component {
         if (this.state.userInfoIdValidateState === 'error' || this.state.userInfoDeviceValidateState === 'error'
             || this.state.userInfoPasswordValidateState === 'error') return;
         Request.createOrUpdateUser({
-            id: parseInt(this.state.userInfoId),
+            id: parseInt(this.state.userInfoId, 10),
             password: this.state.userInfoPassword,
-            device: isNaN(parseInt(this.state.userInfoDevice)) ? 0 : parseInt(this.state.userInfoDevice),
+            device: isNaN(parseInt(this.state.userInfoDevice, 10)) ? 0 : parseInt(this.state.userInfoDevice, 10),
         }, (error) => {
             if (error instanceof Error) window.localStorage && (window.localStorage.error = error);
             this.closeUserInfoDialog();
@@ -92,15 +92,17 @@ class UserManagementPage extends Component {
         switch (e.target.name) {
             case "userInfoDevice":
                 state[e.target.name + 'ValidateState'] =
-                    (e.target.value === '' || parseInt(e.target.value) <= 20 && parseInt(e.target.value) >= 0)
+                    (e.target.value === '' || (parseInt(e.target.value, 10) <= 20 && parseInt(e.target.value, 10) >= 0))
                         ? 'success' : 'error';
                 break;
             case "userInfoId":
-                state[e.target.name + 'ValidateState'] = parseInt(e.target.value).toString() === e.target.value
+                state[e.target.name + 'ValidateState'] = parseInt(e.target.value, 10).toString() === e.target.value
                     ? 'success' : 'error';
                 break;
             case "userInfoPassword":
                 state[e.target.name + 'ValidateState'] = e.target.value.length > 2 ? 'success' : 'error';
+                break;
+            default:
         }
         this.setState(state);
     };

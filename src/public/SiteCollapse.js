@@ -21,7 +21,7 @@ class SiteCollapse extends Component {
                 <Nav>
                     <NavItem eventKey={1}><Link to={"/admin/user"}>用户管理</Link></NavItem>
                     <NavItem eventKey={2}><Link to={"/admin/status"}>设备状态</Link></NavItem>
-                    <NavItem eventKey={3}><Link to={this.props.downloadLink}>下载数据</Link></NavItem>
+                    <NavItem eventKey={3}><Link to={this.props.downloadLink || ''}>下载数据</Link></NavItem>
                 </Nav> : <React.Fragment/>
             }
             {
