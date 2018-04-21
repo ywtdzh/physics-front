@@ -60,7 +60,7 @@ const getEquipStatus = (callback) => {
                 callback(new Error(response.msg));
             }
             if (callback instanceof Function)
-                callback(response.data);
+                callback(response.data || []);
         });
 };
 
@@ -73,7 +73,7 @@ const getOwnEquipStatus = (callback) => {
                 callback(new Error(response.msg));
             }
             if (callback instanceof Function)
-                callback(response.data);
+                callback(response.data || {});
         });
 };
 
