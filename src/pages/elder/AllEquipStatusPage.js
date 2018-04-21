@@ -70,7 +70,10 @@ class AllEquipStatus extends Component {
                 {rows}
                 </tbody>
             </Table>
-            <a href={this.props.downloadLink}><Button bsStyle={"info"} className={"pull-right"}>下载数据</Button></a>
+            <Button bsStyle={"info"} className={"pull-right"}
+                    onClick={() => {
+                        if (this.props.downloadLink) window.location.href = this.props.downloadLink
+                    }}>下载数据</Button>
         </Col></Row></Grid>;
     }
 }
