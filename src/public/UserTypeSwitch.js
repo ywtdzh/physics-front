@@ -7,6 +7,8 @@ class UserTypeSwitch extends Component {
     render() {
         if (!this.props.isLoggedIn) {
             return <Redirect to={"/login"}/>
+        } else if (this.props.previousPage) {
+            return <Redirect to={this.props.previousPage}/>
         } else if (this.props.userType === 'naive') {
             return <Redirect to={"/user"}/>
         } else if (this.props.userType === 'elder') {
@@ -17,11 +19,10 @@ class UserTypeSwitch extends Component {
 
 function storeStateToComponentProp(state) {
     //select part of the state it need
-    let users = state.users;
     return {
-        users: users,
         isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
         userType: state.userInfo && state.userInfo.type,
+        previousPage: state.previousPage,
     };
 }
 

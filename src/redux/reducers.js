@@ -3,32 +3,37 @@ import {ACTION_TYPE} from "./ActionFactory";
 const users = (state = [], action) => {
     return action.type === ACTION_TYPE.FETCH_USERS ?
         action.users :
-        state || [];
+        state;
 };
 const equipStatus = (state = [], action) => {
     return action.type === ACTION_TYPE.FETCH_EQUIP_STATUS ?
         action.equipStatus :
-        state || [];
+        state;
 };
 const ownEquipStatus = (state = {}, action) => {
     return action.type === ACTION_TYPE.FETCH_OWN_EQUIP_STATUS ?
         action.ownEquipStatus :
-        state || {};
+        state;
 };
 const userInfo = (state = {}, action) => {
     return action.type === ACTION_TYPE.FETCH_USER_INFO ?
         action.userInfo :
-        state || {};
+        state;
 };
-const code = (state = {}, action) => {
+const code = (state = "", action) => {
     return action.type === ACTION_TYPE.FETCH_CODE ?
         action.code :
-        state || {};
+        state;
 };
-const downloadLink = (state = {}, action) => {
+const downloadLink = (state = "", action) => {
     return action.type === ACTION_TYPE.FETCH_DOWNLOAD_LINK ?
         action.downloadLink :
-        state || {};
+        state;
+};
+const previousPage = (state = "", action) => {
+    return action.type === ACTION_TYPE.PREVIOUS_PAGE ?
+        action.previousPage :
+        state;
 };
 
 export default {
@@ -38,4 +43,5 @@ export default {
     userInfo,
     code,
     downloadLink,
+    previousPage,
 };

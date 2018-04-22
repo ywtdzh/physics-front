@@ -25,7 +25,7 @@ class LoginForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        if(!this.state.id || !this.state.password) {
+        if (!this.state.id || !this.state.password) {
             this.setState({error: "缺少必填项"});
             return;
         }
@@ -40,6 +40,11 @@ class LoginForm extends Component {
     render() {
         if (this.props.isLoggedIn) {
             return <Redirect to={"/"}/>
+        } else {
+            Request.getUserInfo(null, (userInfo) => {
+                if (userInfo && userInfo.id)
+                    this.props.dispatch(Actions.createUserInfo(userInfo));
+            });
         }
         return (<Grid>
             <Row><Col mdOffset={3} md={6}>

@@ -10,34 +10,62 @@ class AllEquipStatus extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {};
         this.getEquipmentStatus();
         this.getDownloadLink();
     }
 
+    componentDidMount = () => {
+        const timer = setInterval(() => {
+            this.getEquipmentStatus();
+            this.getDownloadLink();
+        }, 5000);
+        this.setState({timer});
+    };
+
+    componentWillUnmount = () => {
+        clearInterval(this.state.timer);
+    };
+
     getEquipmentStatus = () => {
         Request.getEquipStatus(status => {
-            if (status instanceof Error) window.localStorage && (window.localStorage.error = status);
-            this.props.dispatch(ActionFactory.createEquipStatus(status));
+            if (status instanceof Error) {
+                window.localStorage && (window.localStorage.error = status);
+                if (status.message === 'need_login')
+                    this.props.dispatch(ActionFactory.createUserInfo({}));
+            }
+            else this.props.dispatch(ActionFactory.createEquipStatus(status));
         });
     };
 
     getDownloadLink = () => {
         Request.getDownloadLink(downloadLink => {
-            if (downloadLink instanceof Error) window.localStorage && (window.localStorage.error = downloadLink);
-            this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
+            if (downloadLink instanceof Error) {
+                window.localStorage && (window.localStorage.error = downloadLink);
+                if (downloadLink.message === 'need_login')
+                    this.props.dispatch(ActionFactory.createUserInfo({}));
+            }
+            else this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };
 
     render = () => {
         if (!this.props.isLoggedIn) {
-            return <Redirect to={"/login"}/>
+            Request.getUserInfo(null, (userInfo) => {
+                if (userInfo && userInfo.id)
+                    this.props.dispatch(ActionFactory.createUserInfo(userInfo));
+            });
+            this.props.dispatch(ActionFactory.createPreviousPage('/admin/status'));
+            return <Redirect to={"/login"}/>;
         } else if (this.props.userType === 'naive') {
+            this.props.dispatch(ActionFactory.createPreviousPage(''));
             return <Grid><Row><Col lgOffset={3} lg={6}>
                 <Link to={"/"}>
                     <h3>您没有此操作对应的权限，点击返回</h3>
                 </Link>
             </Col></Row></Grid>
         }
+        this.props.dispatch(ActionFactory.createPreviousPage(''));
         const rows = [];
         this.props.equipStatus.forEach(ele => {
             rows.push(<tr>
@@ -72,7 +100,7 @@ class AllEquipStatus extends Component {
             </Table>
             <Button bsStyle={"info"} className={"pull-right"}
                     onClick={() => {
-                        if (this.props.downloadLink) window.location.href = this.props.downloadLink
+                        if (this.props.downloadLink) window.location.href = this.props.downloadLink;
                     }}>下载数据</Button>
         </Col></Row></Grid>;
     }
@@ -89,7 +117,7 @@ function storeStateToComponentProp(state) {
         isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
         userType: state.userInfo && state.userInfo.type,
         equipStatus,
-        downloadLink: state.downloadLink.downloadLink,
+        downloadLink: state.downloadLink,
     };
 }
 

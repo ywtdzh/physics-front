@@ -1,39 +1,81 @@
 import Axios from 'axios';
 import Config from './config';
 
+const parseCookie = (cookieStr) => {
+    const KVPairs = cookieStr.split('; ');
+    const cookie = {};
+    KVPairs.forEach(KVPair => {
+        const values = KVPair.split('=');
+        if (values.length === 2) cookie[values[0]] = values[1];
+    });
+    return cookie;
+};
+
 const getToken = () => {
     let token;
     if (window.localStorage instanceof Object) {
-        token = window.localStorage.token;
+        token = window.localStorage.loginToken;
     }
-    if (token === undefined) {
-        token = document.cookie;
+    if (!token || token === 'null') {
+        token = parseCookie(document.cookie).loginToken;
     }
     return token;
 };
 
 const logOut = () => {
+    document.cookie = 'loginToken=';
+    if (window.localStorage) window.localStorage.loginToken = '';
     Axios.post(`${Config.server()}/api/user/logout`, {token: getToken()});
 };
 
 const getUserInfo = (loginInfo, callback) => {
-    Axios.post(`${Config.server()}/api/user/login`, loginInfo)
-        .then(res => {
-            const response = res.data;
-            if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
-                callback(new Error(response.msg));
-            }
-            if (window.localStorage instanceof Object)
-                window.localStorage.token = response.data.token;
-            // noinspection JSUnresolvedVariable
-            let userInfo = {
-                id: loginInfo.id,
-                type: response.data.user_group === 0 ? 'elder' : 'naive',
-                device: response.data.device || undefined,
-            };
-            if (callback instanceof Function)
-                callback(userInfo);
-        });
+    (async () => {
+        let loginToken;
+        if (window.localStorage) loginToken = window.localStorage.loginToken;
+        else loginToken = parseCookie(document.cookie).loginToken;
+        let logged = false;
+        if (loginInfo === null && loginToken) {
+            await Axios.post(`${Config.server()}/api/user/info`, {token: getToken()})
+                .then(res => {
+                    const response = res.data;
+                    if (response.status) {
+                        logged = true;
+                        if (callback instanceof Function) { // noinspection JSUnresolvedVariable
+                            callback({
+                                id: response.data.id,
+                                type: response.data.user_group === 0 ? 'elder' : 'naive',
+                                device: response.data.device || undefined,
+                            });
+                        }
+                    } else {
+                        callback();
+                    }
+                });
+        }
+        if (loginInfo instanceof Object && !logged)
+            Axios.post(`${Config.server()}/api/user/login`, loginInfo)
+                .then(res => {
+                    const response = res.data;
+                    if (!response.status) {
+                        if (callback instanceof Function) // noinspection JSUnresolvedVariable
+                            callback(new Error(response.msg));
+                        return;
+                    }
+                    if (window.localStorage instanceof Object)
+                        window.localStorage.loginToken = response.data.token;
+                    document.cookie = "loginToken=" + response.data.token;
+                    // noinspection JSUnresolvedVariable
+                    let userInfo = {
+                        id: loginInfo.id,
+                        type: response.data.user_group === 0 ? 'elder' : 'naive',
+                        device: response.data.device || undefined,
+                    };
+                    if (callback instanceof Function)
+                        callback(userInfo);
+                });
+    })().catch(e => {
+    });
+
 };
 
 const getUsers = (callback) => {
@@ -128,8 +170,7 @@ const submitCode = (code, callback = null) => {
             const response = res.data;
             if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
                 callback(new Error(response.msg));
-            }
-            if (callback instanceof Function)
+            } else if (callback instanceof Function)
                 callback();
         });
 };
@@ -139,7 +180,7 @@ const deleteUsers = (users, callback) => {
     Axios.post(`${Config.server()}/api/user/delete`, {
         token,
         users,
-    }).then(res=>{
+    }).then(res => {
         const response = res.data;
         if (!response.status && callback instanceof Function) { // noinspection JSUnresolvedVariable
             callback(new Error(response.msg));

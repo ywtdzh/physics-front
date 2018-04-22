@@ -24,8 +24,12 @@ class UserManagementPage extends Component {
 
     refreshList = () => {
         Request.getUsers(users => {
-            if (users instanceof Error) window.localStorage && (window.localStorage.error = users);
-            this.props.dispatch(ActionFactory.createUsers(users));
+            if (users instanceof Error) {
+                window.localStorage && (window.localStorage.error = users);
+                if (users.message === 'need_login')
+                    this.props.dispatch(ActionFactory.createUserInfo({}));
+            }
+            else this.props.dispatch(ActionFactory.createUsers(users));
         });
     };
 
@@ -78,7 +82,11 @@ class UserManagementPage extends Component {
             password: this.state.userInfoPassword,
             device: isNaN(parseInt(this.state.userInfoDevice, 10)) ? 0 : parseInt(this.state.userInfoDevice, 10),
         }, (error) => {
-            if (error instanceof Error) window.localStorage && (window.localStorage.error = error);
+            if (error instanceof Error) {
+                window.localStorage && (window.localStorage.error = error);
+                if (error.message === 'need_login')
+                    this.props.dispatch(ActionFactory.createUserInfo({}));
+            }
             this.closeUserInfoDialog();
             this.refreshList();
         });
@@ -115,14 +123,21 @@ class UserManagementPage extends Component {
 
     render = () => {
         if (!this.props.isLoggedIn) {
+            Request.getUserInfo(null, (userInfo) => {
+                if (userInfo && userInfo.id)
+                    this.props.dispatch(ActionFactory.createUserInfo(userInfo));
+            });
+            this.props.dispatch(ActionFactory.createPreviousPage('/admin/user'));
             return <Redirect to={"/login"}/>
         } else if (this.props.userType === 'naive') {
+            this.props.dispatch(ActionFactory.createPreviousPage(''));
             return <Grid><Row><Col lgOffset={3} lg={6}>
                 <Link to={"/"}>
                     <h3>您没有此操作对应的权限，点击返回</h3>
                 </Link>
             </Col></Row></Grid>
         }
+        this.props.dispatch(ActionFactory.createPreviousPage(''));
         const users = this.props.users;
         const rows = [];
         users.forEach((user, index) => {

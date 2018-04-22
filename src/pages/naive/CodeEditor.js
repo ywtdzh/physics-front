@@ -10,6 +10,7 @@ import 'codemirror/mode/clike/clike';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/hint/anyword-hint';
+import ActionFactory from "../../redux/ActionFactory";
 
 class CodeEditor extends Component {
 
@@ -31,8 +32,13 @@ class CodeEditor extends Component {
     submit = (e) => {
         e.preventDefault();
         Request.submitCode(this.props.value, (error) => {
-            if(error instanceof Error) alert(`提交错误:${error.toString().slice(7)}`);
-            alert("提交成功！")
+            if (error instanceof Error) {
+                alert(`提交错误:${error.toString().slice(7)}`);
+                if (error.message === 'need_login')
+                    this.props.dispatch(ActionFactory.createUserInfo({}));
+            } else {
+                alert("提交成功！");
+            }
         });
     };
 

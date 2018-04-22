@@ -5,6 +5,7 @@ export const ACTION_TYPE = {
     FETCH_USER_INFO: 'FETCH_USER_INFO',
     FETCH_CODE: 'FETCH_CODE',
     FETCH_DOWNLOAD_LINK: 'DOWNLOAD_LINK',
+    PREVIOUS_PAGE: 'PREVIOUS_PAGE',
 };
 
 const ActionFactory = {
@@ -17,14 +18,17 @@ const ActionFactory = {
     createOwnEquipStatus(ownEquipStatus) {
         return {type: ACTION_TYPE.FETCH_OWN_EQUIP_STATUS, ownEquipStatus};
     },
-    createUserInfo(userInfo){
-        return {type:ACTION_TYPE.FETCH_USER_INFO, userInfo};
+    createUserInfo(userInfo) {
+        return {type: ACTION_TYPE.FETCH_USER_INFO, userInfo};
     },
     createCode(code) {
         return {type: ACTION_TYPE.FETCH_CODE, code};
     },
     createDownloadLink(downloadLink) {
         return {type: ACTION_TYPE.FETCH_DOWNLOAD_LINK, downloadLink};
+    },
+    createPreviousPage(previousPage) {
+        return {type: ACTION_TYPE.PREVIOUS_PAGE, previousPage}
     },
 };
 
