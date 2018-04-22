@@ -80,7 +80,6 @@ class NaivePage extends Component {
         }
         this.props.dispatch(ActionFactory.createPreviousPage(''));
         const ownStatus = [];
-        console.log(ownStatus);
         for (let key in this.props.equipStatus) {
             if (this.props.equipStatus.hasOwnProperty(key)) {
                 ownStatus.push(<tr>
@@ -89,7 +88,6 @@ class NaivePage extends Component {
                 </tr>);
             }
         }
-        console.log(ownStatus);
         return <Grid><Row><Col lg={10} lgOffset={1}>
             <h2>当前设备状态：</h2>
             <Table striped condensed bordered responsive hover>
