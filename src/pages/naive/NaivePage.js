@@ -97,7 +97,7 @@ class NaivePage extends Component {
             <CodeEditor value={this.state.code} onBeforeChange={(editor, data, value) => {
                 this.setState({code: value});
             }}/>
-            {this.props.downloadLink
+            {!this.props.downloadLink
                 ? <React.Fragment/> :
                 <React.Fragment>
                     <hr/>
