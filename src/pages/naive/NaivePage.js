@@ -109,7 +109,7 @@ class NaivePage extends Component {
                 </React.Fragment>
             }
         </Col></Row></Grid>;
-    }
+    }ya
 }
 
 function storeStateToComponentProp(state) {
