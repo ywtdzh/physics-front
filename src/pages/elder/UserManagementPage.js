@@ -53,8 +53,8 @@ class UserManagementPage extends Component {
             userInfoIdValidateState: 'success',
             userInfoDevice: user.device,
             userInfoDeviceValidateState: 'success',
-            userInfoPassword: "",
-            userInfoPasswordValidateState: 'error',
+            userInfoPassword: 999999,
+            userInfoPasswordValidateState: 'success',
         });
     };
 
@@ -79,7 +79,7 @@ class UserManagementPage extends Component {
             || this.state.userInfoPasswordValidateState === 'error') return;
         Request.createOrUpdateUser({
             id: parseInt(this.state.userInfoId, 10),
-            password: this.state.userInfoPassword,
+            password: this.state.userInfoPassword === 999999 ? undefined : this.state.userInfoPassword,
             device: isNaN(parseInt(this.state.userInfoDevice, 10)) ? 0 : parseInt(this.state.userInfoDevice, 10),
         }, (error) => {
             if (error instanceof Error) {
