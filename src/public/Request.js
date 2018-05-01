@@ -74,6 +74,7 @@ const getUserInfo = (loginInfo, callback) => {
                         callback(userInfo);
                 });
     })().catch(e => {
+        callback(e);
     });
 
 };
@@ -90,6 +91,9 @@ const getUsers = (callback) => {
                 callback(response.data instanceof Array ?
                     response.data.map(source => ({id: source.id, device: source.device, type: 'naive'})) :
                     new Error('Typeof "data" field do not match'));
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
@@ -103,6 +107,9 @@ const getEquipStatus = (callback) => {
             }
             if (callback instanceof Function)
                 callback(response.data || []);
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
@@ -116,6 +123,9 @@ const getOwnEquipStatus = (callback) => {
             }
             if (callback instanceof Function)
                 callback(response.data || {});
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
@@ -129,6 +139,9 @@ const getCode = (callback) => {
             }
             if (callback instanceof Function)
                 callback(response.data);
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
@@ -163,6 +176,9 @@ const createOrUpdateUser = (userAuthenticate, callback) => {
             }
             if (callback instanceof Function)
                 callback({status: response.status, code: response.data});
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
@@ -175,6 +191,9 @@ const submitCode = (code, callback = null) => {
                 callback(new Error(response.msg));
             } else if (callback instanceof Function)
                 callback();
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
@@ -190,7 +209,10 @@ const deleteUsers = (users, callback) => {
         }
         if (callback instanceof Function)
             callback();
-    });
+    })
+        .catch(e => {
+            callback(e);
+        });
 };
 
 export default {
