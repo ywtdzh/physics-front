@@ -5,6 +5,7 @@ import ActionFactory from "../../redux/ActionFactory";
 import Request from '../../public/Request';
 import {Button, Col, Grid, Row, Table} from "react-bootstrap";
 import CodeEditor from "./CodeEditor";
+import Config from '../../public/config';
 
 class NaivePage extends Component {
 
@@ -13,13 +14,11 @@ class NaivePage extends Component {
         this.state = {code: props.code};
         this.getOwnStatus();
         this.getCode();
-        this.getDownloadLink();
     }
 
     componentDidMount = () => {
-        const timer = setInterval(()=>{
+        const timer = setInterval(() => {
             this.getOwnStatus();
-            this.getDownloadLink();
         }, 5000);
         this.setState({timer});
     };
@@ -55,17 +54,6 @@ class NaivePage extends Component {
         });
     };
 
-    getDownloadLink = () => {
-        Request.getDownloadLink(downloadLink => {
-            if (downloadLink instanceof Error) {
-                window.localStorage && (window.localStorage.error = downloadLink);
-                if (downloadLink.message === 'need_login')
-                    this.props.dispatch(ActionFactory.createUserInfo({}));
-            }
-            else this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
-        });
-    };
-
     render() {
         if (!this.props.isLoggedIn) {
             Request.getUserInfo(null, (userInfo) => {
@@ -97,30 +85,40 @@ class NaivePage extends Component {
             <CodeEditor value={this.state.code} onBeforeChange={(editor, data, value) => {
                 this.setState({code: value});
             }}/>
-            {!this.props.downloadLink
-                ? <React.Fragment/> :
-                <React.Fragment>
-                    <hr/>
-                    <h2>当前设备数据：</h2>
-                    <Button bsStyle={"success"} className={"pull-right"}
-                            onClick={() => {
-                                if (this.props.downloadLink) window.location.href = this.props.downloadLink;
-                            }}>下载数据</Button>
-                </React.Fragment>
-            }
+            <React.Fragment>
+                <hr/>
+                <h2>当前设备数据：</h2>
+                <Button bsStyle={"success"} className={"pull-right"}
+                        onClick={() => {
+                            let win = window.open('about:blank');
+                            setTimeout(() => {
+                                win.document.body.innerHTML = "<h2> 服务器正在生成文件，这可能要消耗较长的一段时间，请稍候...... </h2>";
+                            }, 200);
+                            Request.getDownloadLink(link => {
+                                if (link instanceof Error) {
+                                    if (window.localStorage) window.localStorage.error = link;
+                                    win.document.body.innerHTML = "<h2>抱歉，由于服务器内部错误未能生成数据，请联系管理员</h2>";
+                                } else {
+                                    win.location.href = Config.staticServer() + link;
+                                    win.document.body.innerHTML = "<p>若下载没有开始，请点击此链接：<a href='" +
+                                        Config.staticServer() + link +
+                                        "'>点此下载</a></p>";
+                                }
+                            });
+                        }}>下载数据</Button>
+            </React.Fragment>
         </Col></Row></Grid>;
     }
 }
 
 function storeStateToComponentProp(state) {
     //select part of the state it need
-    const {userInfo, equipStatus, code, downloadLink} = state;
+    const {userInfo, equipStatus, code} = state;
     return {
         isLoggedIn: !!(userInfo && userInfo.id),
         userInfo,
         equipStatus,
         code: code,
-        downloadLink: downloadLink,
     };
 }
 

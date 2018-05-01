@@ -5,6 +5,7 @@ import {Button, Col, Grid, Row, Table} from "react-bootstrap";
 import {isNullOrUndefined} from 'util';
 import ActionFactory from "../../redux/ActionFactory";
 import Request from '../../public/Request';
+import Config from "../../public/config";
 
 class AllEquipStatus extends Component {
 
@@ -12,13 +13,11 @@ class AllEquipStatus extends Component {
         super(props);
         this.state = {};
         this.getEquipmentStatus();
-        this.getDownloadLink();
     }
 
     componentDidMount = () => {
         const timer = setInterval(() => {
             this.getEquipmentStatus();
-            this.getDownloadLink();
         }, 5000);
         this.setState({timer});
     };
@@ -35,17 +34,6 @@ class AllEquipStatus extends Component {
                     this.props.dispatch(ActionFactory.createUserInfo({}));
             }
             else this.props.dispatch(ActionFactory.createEquipStatus(status));
-        });
-    };
-
-    getDownloadLink = () => {
-        Request.getDownloadLink(downloadLink => {
-            if (downloadLink instanceof Error) {
-                window.localStorage && (window.localStorage.error = downloadLink);
-                if (downloadLink.message === 'need_login')
-                    this.props.dispatch(ActionFactory.createUserInfo({}));
-            }
-            else this.props.dispatch(ActionFactory.createDownloadLink(downloadLink));
         });
     };
 
@@ -100,7 +88,21 @@ class AllEquipStatus extends Component {
             </Table>
             <Button bsStyle={"info"} className={"pull-right"}
                     onClick={() => {
-                        if (this.props.downloadLink) window.location.href = this.props.downloadLink;
+                        let win = window.open('about:blank');
+                        setTimeout(() => {
+                            win.document.body.innerHTML = "<h2> 服务器正在生成文件，这可能要消耗较长的一段时间，请稍候...... </h2>";
+                        }, 200);
+                        Request.getDownloadLink(link => {
+                            if (link instanceof Error) {
+                                if (window.localStorage) window.localStorage.error = link;
+                                win.document.body.innerHTML = "<h2>抱歉，由于服务器内部错误未能生成数据，请联系管理员</h2>";
+                            } else {
+                                win.location.href = Config.staticServer() + link;
+                                win.document.body.innerHTML = "<p>若下载没有开始，请点击此链接：<a href='" +
+                                    Config.staticServer() + link +
+                                    "'>点此下载</a></p>";
+                            }
+                        });
                     }}>下载数据</Button>
         </Col></Row></Grid>;
     }
@@ -117,7 +119,6 @@ function storeStateToComponentProp(state) {
         isLoggedIn: state.userInfo && !isNullOrUndefined(state.userInfo.id),
         userType: state.userInfo && state.userInfo.type,
         equipStatus,
-        downloadLink: state.downloadLink,
     };
 }
 

@@ -25,11 +25,6 @@ const code = (state = "", action) => {
         action.code :
         state;
 };
-const downloadLink = (state = "", action) => {
-    return action.type === ACTION_TYPE.FETCH_DOWNLOAD_LINK ?
-        action.downloadLink :
-        state;
-};
 const previousPage = (state = "", action) => {
     return action.type === ACTION_TYPE.PREVIOUS_PAGE ?
         action.previousPage :
@@ -42,6 +37,5 @@ export default {
     ownEquipStatus,
     userInfo,
     code,
-    downloadLink,
     previousPage,
 };

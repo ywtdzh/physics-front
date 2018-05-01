@@ -24,9 +24,6 @@ const ActionFactory = {
     createCode(code) {
         return {type: ACTION_TYPE.FETCH_CODE, code};
     },
-    createDownloadLink(downloadLink) {
-        return {type: ACTION_TYPE.FETCH_DOWNLOAD_LINK, downloadLink};
-    },
     createPreviousPage(previousPage) {
         return {type: ACTION_TYPE.PREVIOUS_PAGE, previousPage}
     },
