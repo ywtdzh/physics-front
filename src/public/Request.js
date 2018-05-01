@@ -142,6 +142,9 @@ const getDownloadLink = (callback) => {
             }
             if (callback instanceof Function)
                 callback(response.data);
+        })
+        .catch(e => {
+            callback(e);
         });
 };
 
