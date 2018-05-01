@@ -47,7 +47,7 @@ const getUserInfo = (loginInfo, callback) => {
                                 device: response.data.device || undefined,
                             });
                         }
-                    } else {
+                    } else if (callback instanceof Function) {
                         callback();
                     }
                 });
@@ -74,7 +74,8 @@ const getUserInfo = (loginInfo, callback) => {
                         callback(userInfo);
                 });
     })().catch(e => {
-        callback(e);
+        if (callback instanceof Function)
+            callback(e);
     });
 
 };
@@ -93,7 +94,8 @@ const getUsers = (callback) => {
                     new Error('Typeof "data" field do not match'));
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -109,7 +111,8 @@ const getEquipStatus = (callback) => {
                 callback(response.data || []);
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -125,7 +128,8 @@ const getOwnEquipStatus = (callback) => {
                 callback(response.data || {});
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -141,7 +145,8 @@ const getCode = (callback) => {
                 callback(response.data);
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -157,7 +162,8 @@ const getDownloadLink = (callback) => {
                 callback(response.data);
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -178,7 +184,8 @@ const createOrUpdateUser = (userAuthenticate, callback) => {
                 callback({status: response.status, code: response.data});
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -193,7 +200,8 @@ const submitCode = (code, callback = null) => {
                 callback();
         })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
@@ -211,7 +219,8 @@ const deleteUsers = (users, callback) => {
             callback();
     })
         .catch(e => {
-            callback(e);
+            if (callback instanceof Function)
+                callback(e);
         });
 };
 
