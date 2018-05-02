@@ -8,12 +8,13 @@ class SiteHeader extends Component {
     render() {
         return (<Navbar collapseOnSelect inverse>
             <Navbar.Header>
-                <img src={logo} alt="" className={"img-responsive"} style={{height: "50px"}}/>
+                <img src={logo} alt="" className={"img-responsive"}
+                     style={{height: "50px", display: "inline-block", float: "left"}}/>
                 <Navbar.Toggle/>
+                <Navbar.Text style={{display: "inline-block"}}>
+                    <Link to={"/"}>大学物理实验</Link>
+                </Navbar.Text>
             </Navbar.Header>
-            <Navbar.Text style={{display: "inline"}}>
-                <Link to={"/"}>大学物理实验</Link>
-            </Navbar.Text>
             <SiteCollapse/>
         </Navbar>);
     }
