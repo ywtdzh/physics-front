@@ -8,5 +8,6 @@ export default {
     },
     staticServer: function () {
         return `${this.protocol}://${this.host}:${this.staticPort}`;
-    }
+    },
+    defaultCode: "int onUpdate(int generator_i, int generator_u, int payload_i, int payload_u) {}",
 };

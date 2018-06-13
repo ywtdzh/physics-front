@@ -82,7 +82,7 @@ class NaivePage extends Component {
                 <tbody>{ownStatus}</tbody>
             </Table>
             <Button bsStyle={"info"} className={"pull-right"} onClick={this.getOwnStatus}>刷新设备信息</Button>
-            <CodeEditor value={this.state.code} onBeforeChange={(editor, data, value) => {
+            <CodeEditor value={this.state.code || Config.defaultCode} onBeforeChange={(editor, data, value) => {
                 this.setState({code: value});
             }}/>
             <React.Fragment>
