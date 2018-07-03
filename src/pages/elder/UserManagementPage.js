@@ -6,6 +6,7 @@ import Request from "../../public/Request";
 import FieldInputGroup from "../FieldInputGroup";
 import {isNullOrUndefined} from "util";
 import {Link, Redirect} from "react-router-dom";
+import ErrorDialog from "../../public/ErrorDialog";
 
 class UserManagementPage extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class UserManagementPage extends Component {
             userInfoDeviceValidateState: null,
             userInfoPassword: "",
             userInfoPasswordValidateState: null,
+            networkDialog: false,
         };
         this.refreshList();
     }
@@ -64,6 +66,12 @@ class UserManagementPage extends Component {
         });
     };
 
+    closeNetworkDialog = () => {
+        this.setState({
+            networkDialog: false,
+        });
+    };
+
     deleteUsers = () => {
         const deleteList = [], clearState = {};
         this.props.users.forEach((user, i) => {
@@ -87,6 +95,7 @@ class UserManagementPage extends Component {
                 if (error.message === 'need_login')
                     this.props.dispatch(ActionFactory.createUserInfo({}));
             }
+            this.setState({networkDialog: true});
             this.closeUserInfoDialog();
             this.refreshList();
         });
@@ -207,6 +216,8 @@ class UserManagementPage extends Component {
                     <Button bsStyle="primary" onClick={this.submitUserInfo}>保存</Button>
                 </Modal.Footer>
             </Modal>
+            <ErrorDialog show={this.state.networkDialog} onHide={this.closeNetworkDialog}
+                         message={`错误信息：${window.localStorage.error || '未知错误'}`}/>
         </Grid>);
     }
 }
