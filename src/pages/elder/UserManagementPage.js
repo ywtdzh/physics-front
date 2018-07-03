@@ -94,8 +94,8 @@ class UserManagementPage extends Component {
                 window.localStorage && (window.localStorage.error = error);
                 if (error.message === 'need_login')
                     this.props.dispatch(ActionFactory.createUserInfo({}));
+                this.setState({networkDialog: true});
             }
-            this.setState({networkDialog: true});
             this.closeUserInfoDialog();
             this.refreshList();
         });
