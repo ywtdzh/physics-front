@@ -173,7 +173,7 @@ const createOrUpdateUser = (userAuthenticate, callback) => {
         token,
         target_user_id: userAuthenticate.id,
         target_user_password: userAuthenticate.password,
-        device: userAuthenticate.device || undefined,
+        device: userAuthenticate.device,
     })
         .then(res => {
             const response = res.data;

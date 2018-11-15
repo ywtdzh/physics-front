@@ -88,7 +88,7 @@ class UserManagementPage extends Component {
         Request.createOrUpdateUser({
             id: parseInt(this.state.userInfoId, 10),
             password: this.state.userInfoPassword === 999999 ? undefined : this.state.userInfoPassword,
-            device: isNaN(parseInt(this.state.userInfoDevice, 10)) ? 0 : parseInt(this.state.userInfoDevice, 10),
+            device: isNaN(parseInt(this.state.userInfoDevice, 10)) ? undefined : parseInt(this.state.userInfoDevice, 10),
         }, (error) => {
             if (error instanceof Error) {
                 window.localStorage && (window.localStorage.error = error);
